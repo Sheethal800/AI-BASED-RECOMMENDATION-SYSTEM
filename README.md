@@ -183,3 +183,7 @@ class RecommendationEngine {
         System.out.println("Recommended items for " + user + ": " + recommendations);
     }
 }
+
+#OUTPUT OF THE TASK
+![AI-recommendation](https://github.com/user-attachments/assets/194e0cd9-ac85-4be6-a871-018365eafdea)
+
