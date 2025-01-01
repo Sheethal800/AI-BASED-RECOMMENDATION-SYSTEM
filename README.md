@@ -23,7 +23,60 @@ The cosine similarity is used to measure how similar two users are based on the 
 
 Recommendation Engine:
 The recommendation engine suggests movies for a target user based on the ratings of similar users.
-For a given target user (e.g., "User1"), we find other users with the highest cosine similarity, and recommend movies that the target user has not rated yet but are highly rated by these similar users.
+For a given target user (e.g., "User1"), we find other users with the highest cosine similarity, and recommend movies that the target user has not rated yet but are highly rated by these similar user
+
+Recommendation system using apache mahout 
+
+Prepare the data
+user1,item1,4.0
+user1,item2,5.0
+user2,item1,3.0
+user2,item3,4.0
+user3,item2,2.0
+user3,item3,5.0
+
+Java code for the recommender import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
+import org.apache.mahout.cf.taste.impl.recommender.RecommendedItem;
+import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.recommender.Recommender;
+import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+public class SimpleRecommender {
+
+    public static void main(String[] args) {
+        try {
+            // Step 1: Load user-item ratings data
+            File dataFile = new File("data.csv"); // Adjust the file path as needed
+            DataModel model = new FileDataModel(dataFile);
+
+            // Step 2: Calculate item similarities (using Pearson Correlation here)
+            ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
+
+            // Step 3: Create the recommender using the item similarity
+            Recommender recommender = new GenericItemBasedRecommender(model, similarity);
+
+            // Step 4: Generate recommendations for a user (user with ID 'user1')
+            List<RecommendedItem> recommendations = recommender.recommend(1, 3); // Recommend 3 items
+
+            // Step 5: Output the recommendations
+            for (RecommendedItem recommendation : recommendations) {
+                System.out.println("Recommended Item: " + recommendation.getItemID() +
+                        " with predicted rating: " + recommendation.getValue());
+            }
+
+        } catch (IOException | org.apache.mahout.cf.taste.impl.common.TasteException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Recommendation engine and sample data 
 
 import java.util.*;
 
